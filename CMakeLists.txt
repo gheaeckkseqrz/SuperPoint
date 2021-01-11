@@ -8,8 +8,8 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include_directories(include)
-add_executable(SuperPoint main.cpp)
+include_directories(third_party/CImg/ include)
+add_executable(SuperPoint main.cpp dataset.cpp)
 
 enable_testing()
 add_subdirectory(tests)
