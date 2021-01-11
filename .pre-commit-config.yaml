@@ -1,0 +1,20 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+        exclude: 'tests/catch.hpp'
+
+-   repo: https://github.com/gheaeckkseqrz/pre-commit-hooks
+    rev: master
+    hooks:
+    -   id: clang-format
+        exclude: 'tests/catch.hpp'
+    -   id: clang-tidy
+        args: [-p, build, --warnings-as-errors=*]
+        exclude: 'tests/catch.hpp'

@@ -1,0 +1,12 @@
+﻿---
+BreakBeforeBraces: Allman
+AlwaysBreakTemplateDeclarations: true
+BinPackArguments: true
+BinPackParameters: true
+ColumnLimit: 180
+AllowShortBlocksOnASingleLine: false
+BreakConstructorInitializers: BeforeComma
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+ConstructorInitializerIndentWidth: 2
+AllowShortFunctionsOnASingleLine: Empty
+...
