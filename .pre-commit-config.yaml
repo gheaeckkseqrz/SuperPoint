@@ -8,13 +8,13 @@ repos:
     -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
-        exclude: 'tests/catch.hpp'
+        exclude: 'third_party/*'
 
 -   repo: https://github.com/gheaeckkseqrz/pre-commit-hooks
     rev: master
     hooks:
     -   id: clang-format
-        exclude: 'tests/catch.hpp'
+        exclude: 'third_party/*'
     -   id: clang-tidy
         args: [-p, build, --warnings-as-errors=*]
-        exclude: 'tests/catch.hpp'
+        exclude: 'third_party/*'
