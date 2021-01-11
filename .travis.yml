@@ -3,7 +3,7 @@ dist: focal
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get -y install libsfml-dev cmake
+  - sudo apt-get -y install cmake
 
 script:
     ############################################################################
