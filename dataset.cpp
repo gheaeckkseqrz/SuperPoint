@@ -21,7 +21,12 @@ void SyntheticShapeDataset::generateBackground(TrainingImage &img) const
 {
   // Solid color fill
   std::array<float, 3> background_color = generateRandomColor();
-  img._img.fill(background_color[0], background_color[1], background_color[2]);
+  cimg_forXY(img._img, x, y)
+  {
+    img._img(x, y, 0, 0) = background_color[0];
+    img._img(x, y, 0, 1) = background_color[1];
+    img._img(x, y, 0, 2) = background_color[2];
+  }
 
   // Draw N ellipses
   unsigned int nb_of_elipses = rand() % 11 + 2; // In range [2, 12]
