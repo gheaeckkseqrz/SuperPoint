@@ -7,6 +7,14 @@ before_install:
 
 script:
     ############################################################################
+    # Download and extract pytorch
+    ############################################################################
+     - cd third_party
+     - wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.7.1%2Bcpu.zip
+     - unzip -q libtorch-cxx11-abi-shared-with-deps-1.7.1+cpu.zip
+     - cd ..
+
+    ############################################################################
     # Build main and tests
     ############################################################################
      - mkdir -p build
