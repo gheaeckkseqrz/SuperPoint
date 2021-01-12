@@ -1,4 +1,4 @@
-#include "dataset.h"
+#include "imageGenerator.h"
 
 std::array<float, 3> generateRandomColor()
 {
@@ -9,7 +9,7 @@ std::array<float, 3> generateRandomColor()
   return color;
 }
 
-TrainingImage SyntheticShapeDataset::generateTrainingImage(unsigned int w, unsigned int h) const
+TrainingImage SyntheticShapeGenerator::generateTrainingImage(unsigned int w, unsigned int h) const
 {
   TrainingImage img(w, h);
   generateBackground(img);
@@ -17,7 +17,7 @@ TrainingImage SyntheticShapeDataset::generateTrainingImage(unsigned int w, unsig
   return img;
 }
 
-void SyntheticShapeDataset::generateBackground(TrainingImage &img) const
+void SyntheticShapeGenerator::generateBackground(TrainingImage &img) const
 {
   // Solid color fill
   std::array<float, 3> background_color = generateRandomColor();
@@ -45,7 +45,7 @@ void SyntheticShapeDataset::generateBackground(TrainingImage &img) const
   img._img.blur(16.0f, 16.0f, 16.0f);
 }
 
-void SyntheticShapeDataset::drawTriangle(TrainingImage &img) const
+void SyntheticShapeGenerator::drawTriangle(TrainingImage &img) const
 {
   std::array<float, 3> triangle_color = generateRandomColor();
   Vec2 a, b, c;
@@ -61,7 +61,7 @@ void SyntheticShapeDataset::drawTriangle(TrainingImage &img) const
   img._keypoints.push_back(c);
 }
 
-void SyntheticShapeDataset::drawTriangles(TrainingImage &img) const
+void SyntheticShapeGenerator::drawTriangles(TrainingImage &img) const
 {
   unsigned int number_of_triangles = rand() % 3 + 1; // Range [1, 3]
   for (unsigned int i(0); i < number_of_triangles; ++i)

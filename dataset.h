@@ -1,16 +1,21 @@
 #pragma once
 
-#include "trainingImage.h"
+#include <torch/torch.h>
 
-class SyntheticShapeDataset
+#include "imageGenerator.h"
+#include "trainingTensor.h"
+
+class SyntheticShapeDataset : protected SyntheticShapeGenerator, public torch::data::datasets::StreamDataset<SyntheticShapeDataset, TrainingTensor>
 {
 public:
-  SyntheticShapeDataset() = default;
+  TrainingTensor get_batch(size_t batch_size) override
+  {
+    TrainingImage image = generateTrainingImage(256, 256);
+    return TrainingTensor(image);
+  }
 
-  TrainingImage generateTrainingImage(unsigned int w = 256, unsigned int h = 256) const;
-
-private:
-  void generateBackground(TrainingImage &img) const;
-  void drawTriangles(TrainingImage &img) const;
-  void drawTriangle(TrainingImage &img) const;
+  c10::optional<size_t> size() const override
+  {
+    return torch::nullopt;
+  }
 };
