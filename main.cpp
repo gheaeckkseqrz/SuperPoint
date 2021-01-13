@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 
 #include "dataset.h"
@@ -28,17 +29,21 @@ float train(PointExtractor &model, SyntheticShapeDataset &dataset, torch::optim:
 
 int main(int ac, char **av)
 {
-  SyntheticShapeDataset dataset;
+  torch::Device device(torch::kCUDA);
+  SyntheticShapeDataset dataset(device);
   PointExtractor model(32, 1);
+  model->to(device);
   torch::optim::Adam optimizer(model->parameters(), 1e-4);
   model->train();
   std::cout << model << std::endl;
 
+  std::ofstream train_loss_file("train.txt");
   for (unsigned int epoch(0); epoch < EPOCHS; epoch++)
   {
     float epoch_loss = train(model, dataset, optimizer);
     // No evaluation method as the dataset is generated on the fly.
     std::cout << "Epoch Loss : " << epoch_loss << std::endl;
+    train_loss_file << epoch_loss << std::endl;
     if (epoch % SAVE_EVERY == 0)
       torch::save(model, "point_extractor.pt");
   }

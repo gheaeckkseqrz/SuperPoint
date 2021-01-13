@@ -29,6 +29,13 @@ struct TrainingTensor
       label[0][keypoint.y][keypoint.x] = 1;
   }
 
+  TrainingTensor &to(torch::Device device)
+  {
+    _data = _data.to(device);
+    _labels = _labels.to(device);
+    return *this;
+  }
+
   torch::Tensor _data;
   torch::Tensor _labels;
 };
