@@ -14,6 +14,9 @@ float train(PointExtractor &model, SyntheticShapeDataset &dataset, torch::optim:
   auto data_loader = torch::data::make_data_loader(dataset, torch::data::samplers::StreamSampler(SAMPLES_PER_EPOCH), BATCH_SIZE);
   for (TrainingTensor batch : *data_loader)
   {
+    std::cout << batch._data.sizes() << std::endl;
+    std::cout << batch._labels.sizes() << std::endl;
+    break;
   }
   return 0.0f;
 }

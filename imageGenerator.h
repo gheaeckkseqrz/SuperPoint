@@ -6,6 +6,7 @@ class SyntheticShapeGenerator
 {
 public:
   SyntheticShapeGenerator() = default;
+  virtual ~SyntheticShapeGenerator() = default;
 
   TrainingImage generateTrainingImage(unsigned int w = 256, unsigned int h = 256) const;
 

@@ -6,20 +6,29 @@
 
 struct TrainingTensor
 {
-  TrainingTensor(TrainingImage const &image)
+  TrainingTensor(unsigned int batch_size, unsigned int w, unsigned int h)
   {
-    _t = torch::from_blob(const_cast<float *>(image._img.data()), {3, image._img.width(), image._img.height()});
-    _t = _t.clone(); // Clone the memory, so that image can be released
-    _t /= 255;       // Normalize to [0, 1]
-
-    _keypoints = torch::zeros({static_cast<int64_t>(image._keypoints.size()), 2});
-    for (std::size_t i(0); i < image._keypoints.size(); ++i)
-    {
-      _keypoints[i][0] = image._keypoints[i].x;
-      _keypoints[i][1] = image._keypoints[i].y;
-    }
+    _data = torch::zeros({batch_size, 3, h, w}, torch::TensorOptions().requires_grad(false));
+    _labels = torch::zeros({batch_size, 1, h, w}, torch::TensorOptions().requires_grad(false));
   }
 
-  torch::Tensor _t;
-  torch::Tensor _keypoints;
+  TrainingTensor(TrainingImage const &image)
+  {
+    _data = torch::from_blob(const_cast<float *>(image._img.data()), {3, image._img.width(), image._img.height()});
+    _data = _data.clone(); // Clone the memory, so that image can be released
+    _data /= 255;          // Normalize to [0, 1]
+
+    _labels = torch::zeros({1, image._img.width(), image._img.height()});
+    createLabel(image._keypoints, _labels);
+  }
+
+  static void createLabel(std::vector<Vec2> const &keypoints, torch::Tensor &label)
+  {
+    label.fill_(0);
+    for (Vec2 const &keypoint : keypoints)
+      label[0][keypoint.y][keypoint.x] = 1;
+  }
+
+  torch::Tensor _data;
+  torch::Tensor _labels;
 };
