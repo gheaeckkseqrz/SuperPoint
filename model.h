@@ -18,7 +18,7 @@ public:
     x = torch::nn::functional::relu(_conv1(x));
     x = torch::nn::functional::relu(_conv2(x));
     x = torch::nn::functional::relu(_conv3(x));
-    x = _conv4(x);
+    x = torch::sigmoid(_conv4(x));
     return x;
   }
 
