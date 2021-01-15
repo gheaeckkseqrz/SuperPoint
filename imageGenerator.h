@@ -14,4 +14,5 @@ private:
   void generateBackground(TrainingImage &img) const;
   void drawTriangles(TrainingImage &img) const;
   void drawTriangle(TrainingImage &img) const;
+  void drawRectangle(TrainingImage &img) const;
 };

@@ -13,7 +13,19 @@ TrainingImage SyntheticShapeGenerator::generateTrainingImage(unsigned int w, uns
 {
   TrainingImage img(w, h);
   generateBackground(img);
-  drawTriangle(img);
+
+  unsigned int mode = rand() % 2;
+  switch (mode)
+  {
+  case 0:
+    drawTriangle(img);
+    break;
+  case 1:
+    drawRectangle(img);
+    break;
+  default:
+    break;
+  }
   return img;
 }
 
@@ -59,6 +71,21 @@ void SyntheticShapeGenerator::drawTriangle(TrainingImage &img) const
   img._keypoints.push_back(a);
   img._keypoints.push_back(b);
   img._keypoints.push_back(c);
+}
+
+void SyntheticShapeGenerator::drawRectangle(TrainingImage &img) const
+{
+  std::array<float, 3> rectangle_color = generateRandomColor();
+  Vec2 a, b;
+  a.x = rand() % img._img.width();
+  a.y = rand() % img._img.height();
+  b.x = rand() % img._img.width();
+  b.y = rand() % img._img.height();
+  img._img.draw_rectangle(a.x, a.y, b.x, b.y, rectangle_color.data());
+  img._keypoints.push_back(a);
+  img._keypoints.push_back(b);
+  img._keypoints.push_back({a.x, b.y});
+  img._keypoints.push_back({b.x, a.y});
 }
 
 void SyntheticShapeGenerator::drawTriangles(TrainingImage &img) const
