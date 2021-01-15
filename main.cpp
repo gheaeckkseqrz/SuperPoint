@@ -6,7 +6,7 @@
 #include "trainingTensor.h"
 
 constexpr unsigned int EPOCHS = 100;
-constexpr unsigned int BATCH_SIZE = 8;
+constexpr unsigned int BATCH_SIZE = 64;
 constexpr unsigned int BATCHES_PER_EPOCH = 100;
 constexpr unsigned int SAMPLES_PER_EPOCH = BATCH_SIZE * BATCHES_PER_EPOCH;
 constexpr unsigned int SAVE_EVERY = 1;
@@ -51,7 +51,16 @@ float train(PointExtractor &model, SyntheticShapeDataset &dataset, torch::optim:
     torch::Tensor prediction = model->forward(batch._data);
     if (!i)
       saveResult(batch, prediction, "output.png", epoch);
-    torch::Tensor loss = torch::nn::functional::mse_loss(prediction, batch._labels, torch::nn::MSELossOptions(torch::kSum));
+
+    // We have ~ 3.5 important pixels per image, image size is 256 x 256
+    // We want the loss for important pixels to be equivalent to the loss of zeros pixels
+    // This gives us the following equality :  3.5 x weight = 256 x 256
+    // Thus : weight = (256 x 256) / 3.5
+    float weight = (256 * 256) / 3.5;
+
+    torch::Tensor loss = torch::pow(prediction - batch._labels, 2); // L2
+    loss *= (batch._labels * weight + 1);                           // Weight important pixels to avoid getting an all 0 result
+    loss = torch::sum(loss);
     epoch_loss += loss.item<float>();
     loss.backward();
     optimizer.step();
