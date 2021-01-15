@@ -17,7 +17,7 @@ struct TrainingImage
   {
   }
 
-  void savePNG(std::string const &path, int index = -1) const
+  cimg_library::CImg<float> generatePNG() const
   {
     cimg_library::CImg<float> img(_img);
     cimg_library::CImg<float> grayscale(_img);
@@ -31,6 +31,12 @@ struct TrainingImage
 
     // Concatenate images on top of each other and save
     img.append(grayscale, 'y');
+    return img;
+  }
+
+  void savePNG(std::string const &path, int index = -1) const
+  {
+    cimg_library::CImg<float> img = generatePNG();
     img.save(path.c_str(), index);
   }
 

@@ -20,8 +20,8 @@ public:
     {
       TrainingImage image = generateTrainingImage(_w, _h);
       TrainingTensor tensor(image);
-      batch._data[i].copy_(tensor._data[0]);
-      batch._labels[i].copy_(tensor._labels[0]);
+      batch._data[i].copy_(tensor._data);
+      batch._labels[i].copy_(tensor._labels);
     }
     return batch.to(_device);
   }
